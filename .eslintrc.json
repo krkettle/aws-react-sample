@@ -1,0 +1,29 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 10,
+    "parser": "babel-eslint",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "node": true,
+    "es6": true,
+    "browser": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {"varsIgnorePattern": "^_"}
+    ]
+  }
+}
