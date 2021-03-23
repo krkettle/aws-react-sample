@@ -1,27 +1,37 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import AWS from "aws-sdk";
+
+AWS.config.update({
+  credentials: new AWS.Credentials(
+    process.env.AWS_ACCESS_KEY_ID,
+    process.env.AWS_SECRET_ACCESS_KEY
+  ),
+});
 
 const FETCH_INTERVAL = 3000;
 const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME;
 
-const getS3Object = (setDetail) => {
+const s3 = new AWS.S3();
+
+const getS3Object = async (setDetail) => {
   let messageType;
   if (Math.random() < 0.5) {
     messageType = "good";
   } else {
     messageType = "bad";
   }
-  console.log(
-    `https://${S3_BUCKET_NAME}.s3-ap-northeast-1.amazonaws.com/${messageType}.json`
-  );
-  axios
-    .get(
-      `https://${S3_BUCKET_NAME}.s3-ap-northeast-1.amazonaws.com/${messageType}.json`
-    )
-    .then((res) => {
-      console.log(res.data);
-      setDetail(res.data);
-    });
+  const params = {
+    Bucket: S3_BUCKET_NAME,
+    Key: `${messageType}.json`,
+  };
+  try {
+    const res = await s3.getObject(params).promise();
+    const jsonData = JSON.parse(res.Body.toString());
+    setDetail(jsonData);
+  } catch (err) {
+    console.log(err);
+    setDetail({ color: "black", message: "Error" });
+  }
 };
 
 const App = () => {

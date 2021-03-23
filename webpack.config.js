@@ -9,7 +9,7 @@ const clientDir = path.resolve(__dirname, "src");
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
-  entry: path.resolve(clientDir, "index.jsx"),
+  entry: [path.resolve(clientDir, "index.jsx")],
   output: {
     filename: "bundle.js",
     path: distDir,
@@ -23,7 +23,10 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env", "@babel/preset-react"],
-            plugins: ["@babel/plugin-syntax-jsx"],
+            plugins: [
+              "@babel/plugin-syntax-jsx",
+              "@babel/plugin-transform-runtime",
+            ],
           },
         },
       },
@@ -34,6 +37,7 @@ module.exports = {
     fallback: {
       fs: false,
       path: false,
+      util: false,
     },
   },
   plugins: [
