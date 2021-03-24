@@ -1,0 +1,23 @@
+version: 0.2
+
+env:
+  variables:
+    S3_BUCKET_NAME: react-reload-sample-dev
+  parameter-store:
+    AWS_ACCESS_KEY_ID: REACT_SAMPLE_AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: REACT_SAMPLE_AWS_SECRET_ACCESS_KEY
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+  pre_build:
+    commands:
+      - yarn install
+  build:
+    commands:
+      - yarn build
+
+artifacts:
+  files:
+    - "dist/**/*"
